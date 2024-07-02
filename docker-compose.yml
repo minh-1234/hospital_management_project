@@ -1,0 +1,120 @@
+services:
+   auth-api:
+      restart: always
+      build:
+         context: ./hospital-management-auth
+         dockerfile: Dockerfile
+      container_name: auth-api
+      volumes:
+         - /app/node_modules
+         - ./hospital-management-auth:/app
+      ports:
+         - 8001:8001
+      expose:
+         - 8001
+      depends_on:
+         - mongodb
+      env_file: 
+         - .env
+      environment:
+         MONGO_URI: ${MONGO_URI}
+      networks:
+         - app-connect
+
+   management-api:
+      restart: always
+      build:
+         context: ./hospital-management-mysql
+         dockerfile: Dockerfile
+      container_name: management-api
+      volumes:
+         - /app/node_modules
+         - ./hospital-management-mysql:/app
+      ports:
+         - 8002:8002
+      expose:
+         - 8002
+      depends_on:
+         - db
+         - auth-api
+      env_file: 
+         - .env
+      environment:
+         DB_HOST: db
+         DB_PORT: ${DB_PORT}
+      networks:
+         - app-connect
+
+    
+   client: 
+      restart: always
+      build:
+         context: ./front-end
+         dockerfile: Dockerfile
+      container_name: client
+      volumes:
+         - /app/node_modules
+         - ./front-end:/app
+      ports:
+         - 4000:4000
+      expose:
+         - 4000
+      depends_on:
+         - auth-api
+         - management-api
+      networks:
+         - app-connect
+
+
+   mongodb:
+      image: mongo
+      restart: always
+      ports:
+         - 27017:27017
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+        MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      volumes:
+         - mongodb-data:/data/db
+      networks:
+         - app-connect
+
+   db:
+      image: mysql:8.0
+      restart: always
+      environment:
+         - MYSQL_DATABASE=${DB_NAME}
+         - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      ports:
+         - '3306:3306'
+      expose:
+         - 3306
+      volumes:
+         -  db-data:/var/lib/mysql
+         - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      networks:
+         - app-connect
+   
+
+   nginx:
+      restart: always
+      depends_on:
+         - client
+         - auth-api
+         - management-api
+      build:
+         context: ./nginx
+         dockerfile: Dockerfile
+      ports:
+         - 80:80
+      networks:
+         - app-connect
+
+networks:
+   app-connect:
+      driver: bridge
+
+volumes:
+   mongodb-data:
+   db-data:
+

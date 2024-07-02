@@ -1,0 +1,27 @@
+.center-page-medicalStaff{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border-radius: 10px;
+    overflow: hidden; 
+    width: 40%;
+    height: fit-content;
+    transform: translate(-50%,-50%);
+    z-index: 35;
+
+}
+.outer-form-add-medcialStaff{
+    position: relative;
+    height: fit-content;
+    width:150vw;
+    z-index: 21;  
+    transition: all 0.7s ease-in-out;
+    background-color: white;
+}
+
+.slide_1{
+    transform: translateX(-40vw);
+}
+.slide_2{
+    transform: translate(-80vw);
+}

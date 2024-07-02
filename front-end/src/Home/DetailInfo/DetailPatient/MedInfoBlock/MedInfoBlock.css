@@ -1,0 +1,33 @@
+.title-med-info{
+    text-align: center;
+    /* width: 100%; */
+    background-color: rgb(88, 135, 255);
+    font-weight: bold;
+    color: white;
+    border-radius: 10px;
+    padding: 15px;
+    
+
+}
+.med-info-block{
+    position: relative;
+    height: fit-content;
+    border-radius: 10px;
+    background-color: white;
+    padding: 1vw 1vh;
+    
+    z-index: 3;
+
+}
+.pen-to-square-icon-med {
+    width: fit-content;
+    height: fit-content;
+    position:absolute;
+    right:2vw;
+    font-size:25px;
+    z-index: 3;
+}
+.pen-to-square-icon-med :hover {
+    cursor: pointer;
+    color: gray;
+}

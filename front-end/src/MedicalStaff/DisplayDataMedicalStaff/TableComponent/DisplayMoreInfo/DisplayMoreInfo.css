@@ -1,0 +1,11 @@
+.detail-info-row{
+    margin-top: 2vh;
+}
+.detail-label{
+    font-weight: bold;
+}
+.button_1{
+    background-color: #2ecc71;
+    width: 200px;
+    height: 200px;
+}
