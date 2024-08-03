@@ -24,8 +24,8 @@ const start = async () => {
   try {
     await connectDb();
     app.listen(env.PORT, () => {
-      // console.log(`Example app listening on ${env.HOST_URL}`)
-      console.log(`Server is live on ${env.PORT}`)
+      console.log(`Example app listening on ${env.HOST_URL}`)
+      // console.log(`Server is live on ${env.PORT}`)
     })
     exitHook(() => {
       closeDb()

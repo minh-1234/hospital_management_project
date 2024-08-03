@@ -22,8 +22,8 @@ const start = async () => {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use('/', Router)
   app.listen(env.PORT, () =>
-    // console.log(`Server is live @ ${env.HOST_URL}`),
-    console.log(`Server is live on ${env.PORT}`),
+    console.log(`Server is live @ ${env.HOST_URL}`),
+    // console.log(`Server is live on ${env.PORT}`),
   )
   //CLOSE_DB()
   exitHook(() => {

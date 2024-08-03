@@ -89,7 +89,7 @@ const signIn = async (Data) => {
     }
     const access_token = generateAcessToken({ id: targetUser._id })
     const refresh_token = generateRefreshToken({ id: targetUser._id })
-    return { ...targetUser, access_token: access_token, refresh_token: refresh_token }
+    return { targetUser, access_token: access_token, refresh_token: refresh_token }
   } catch (error) {
     throw new Error(error)
   }

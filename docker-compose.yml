@@ -41,7 +41,7 @@ services:
          - .env
       environment:
          DB_HOST: db
-         DB_PORT: ${DB_PORT}
+         DB_PORT: 3306
       networks:
          - app-connect
 
@@ -86,7 +86,7 @@ services:
          - MYSQL_DATABASE=${DB_NAME}
          - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
       ports:
-         - '3306:3306'
+         - '3307:3306'
       expose:
          - 3306
       volumes:

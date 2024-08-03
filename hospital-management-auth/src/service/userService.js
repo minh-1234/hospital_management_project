@@ -27,10 +27,15 @@ const verifyOtpSignUp = async (reqBody) => {
 }
 const signIn = async (reqBody) => {
   try {
-
-    const loginUser = await userModel.signIn(reqBody);
-    const { password, ...dataUser } = loginUser
-    return dataUser
+    const loginUser = await userModel.signIn(reqBody)
+    if (loginUser.message) {
+      return loginUser
+    }
+    const { targetUser, access_token, refresh_token } = loginUser
+    const { password, ...dataUser } = targetUser._doc
+    return {
+      dataUser, access_token, refresh_token
+    }
   } catch (e) {
     console.error("Error adding document: ", e);
   }
