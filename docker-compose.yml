@@ -36,7 +36,7 @@ services:
          - 8002
       depends_on:
          - db
-         # - auth-api
+         - auth-api
          - rabbitmq
          - redis-docker
       env_file: 
