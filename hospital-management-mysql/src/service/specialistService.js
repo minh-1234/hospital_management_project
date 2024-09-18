@@ -1,5 +1,6 @@
 import { specialistModel } from '../model/specialist.js'
 import { customApiErrorModule } from '../error/customError.js';
+import { checkCacheAndDb } from '../utils/helper.js';
 const createNew = async (reqBody) => {
   try {
     const newSpecialist = await specialistModel.createNew(reqBody);
@@ -53,7 +54,10 @@ const deleteManyItems = async (reqBody) => {
 }
 const findOneById = async (id) => {
   try {
-    const specialist = await specialistModel.findOneById(id);
+    const callBack = async (id) => {
+      return await specialistModel.findOneById(id);
+    }
+    const specialist = await checkCacheAndDb('specialist', id, callBack)
     return specialist
   } catch (e) {
     throw new customApiErrorModule.CustomAPIError(e.statusCode, e.message)

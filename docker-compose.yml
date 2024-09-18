@@ -36,7 +36,9 @@ services:
          - 8002
       depends_on:
          - db
-         - auth-api
+         # - auth-api
+         - rabbitmq
+         - redis-docker
       env_file: 
          - .env
       environment:
@@ -83,18 +85,46 @@ services:
       image: mysql:8.0
       restart: always
       environment:
-         - MYSQL_DATABASE=${DB_NAME}
-         - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+         MYSQL_DATABASE: ${DB_NAME}
+         MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       ports:
          - '3307:3306'
       expose:
          - 3306
       volumes:
-         -  db-data:/var/lib/mysql
          - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+         -  db-data:/var/lib/mysql
+         
       networks:
          - app-connect
    
+   rabbitmq:
+      container_name: rabbitmq-docker
+      image: rabbitmq:3-management
+      environment:
+        RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+        RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+      volumes:
+         - rabbitmq_data:/data
+      ports:
+         - "5672:5672"
+         - "15672:15672"
+      networks:
+         - app-connect
+
+   redis-docker:
+      image: redis:alpine
+      restart: always
+      command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
+      env_file:
+         - .env
+      volumes:
+         - redis-data:/data
+      ports:
+         - "6379:6379" #redis-server
+      networks:
+         - app-connect
+
 
    nginx:
       restart: always
@@ -117,4 +147,6 @@ networks:
 volumes:
    mongodb-data:
    db-data:
+   rabbitmq_data:
+   redis-data:
 

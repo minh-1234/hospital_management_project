@@ -26,6 +26,7 @@ export const sendMail = async (emailReciever, otp) => {
       text: `Your OTP for authentication is ${otp}`,
       html: `<h4>Your OTP is <b>${otp}</b></h4>`,
     })
+    return info
   }
   catch (error) {
     throw new Error(error)

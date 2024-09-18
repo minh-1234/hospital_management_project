@@ -1,6 +1,7 @@
 //import { patientModel } from '../model/patientModel.js'
 import { patientModel } from "../model/patient.js"
 import { customApiErrorModule } from "../error/customError.js";
+import { checkCacheAndDb } from "../utils/helper.js";
 const createNew = async (reqBody) => {
   try {
     const newPatient = await patientModel.createNew(reqBody);
@@ -20,8 +21,11 @@ const getAllPatients = async () => {
 }
 const findOneById = async (id) => {
   try {
-    const Patients = await patientModel.findOneById(id);
-    return Patients
+    const callBack = async (id) => {
+      return await patientModel.findOneById(id);
+    }
+    const Patient = await checkCacheAndDb('patient', id, callBack)
+    return Patient
   } catch (e) {
     throw new customApiErrorModule.CustomAPIError(e.statusCode, e.message)
   }

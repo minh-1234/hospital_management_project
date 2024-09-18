@@ -17,4 +17,5 @@ COPY . .
 EXPOSE 8002
 
 # Command to run the application
-CMD ["npm","run", "production"]
+# CMD ["npm","run", "production"]
+CMD ["node", "./src/test/consumer.test.js"]

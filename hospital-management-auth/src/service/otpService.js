@@ -3,7 +3,7 @@ import { otpModel } from '../model/otpModel.js'
 import otpGenerator from 'otp-generator'
 import { env } from '../config/environment.js'
 import bcrypt from 'bcrypt'
-
+import { syncRabbitmqToSendEmail } from '../util/helper.js'
 
 const generateOtp = async (reqBody) => {
   const otp = otpGenerator.generate(6, {
@@ -15,7 +15,9 @@ const generateOtp = async (reqBody) => {
   const salt = await bcrypt.genSalt(parseInt(env.SALT))
   const hashOtp = await bcrypt.hash(otp, salt)
   const otpCreateNew = await otpModel.Otp.create({ ...reqBody, otp: hashOtp })
-  await sendMail(reqBody.email, otp)
+  // send eamil qua rabbimq (tham so : otp,email,otpCreatNew : boolean)
+  // await sendMail(reqBody.email, otp)
+  await syncRabbitmqToSendEmail({ email: reqBody.email, otp: otp, otpCreateNew: otpCreateNew })
   return otpCreateNew ?
     {
       message: "Gửi OTP thành công !",

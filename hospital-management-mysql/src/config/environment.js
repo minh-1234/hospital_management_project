@@ -14,5 +14,9 @@ export const env = {
   ROLE_USER: process.env.ROLE_USER,
   SALT: process.env.SALT,
   DB_PORT: process.env.DB_PORT,
-  DB_HOST: process.env.DB_HOST
+  DB_HOST: process.env.DB_HOST,
+  USER_MQ: process.env.USER_MQ,
+  PASS_MQ: process.env.PASS_MQ,
+  USER_REDIS_DOCKER: process.env.USER_REDIS_DOCKER,
+  PASS_REDIS_DOCKER: process.env.PASS_REDIS_DOCKER
 };

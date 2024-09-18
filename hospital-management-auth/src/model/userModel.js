@@ -79,6 +79,8 @@ const generateRefreshToken = (data) => {
 const signIn = async (Data) => {
   try {
     const emailUser = Data.email
+    const allUser = await User.find({}).lean()
+    console.log("allUser::", allUser)
     const targetUser = await User.findOne({ email: emailUser })
     if (!targetUser) {
       return { message: "Email is not Exist !" }
